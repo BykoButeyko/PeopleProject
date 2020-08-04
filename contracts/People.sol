@@ -20,7 +20,7 @@ contract People is Ownable{
     modifier costs(uint cost){
         require(msg.value >= cost);
         _;
-    }
+    };
 
     mapping (address => Person) private people;
     address[] private creators;
