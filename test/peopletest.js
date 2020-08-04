@@ -14,13 +14,13 @@ contract("People", async function () {
             value: 1000
         }), truffleAssert.ErrorType.REVERT);
     });
-    it("should set the senior status correctly", async function () {
+    it("should set all people properties correctly", async function () {
         let instance = await People.deployed();
         await instance.createPerson("Bob", 65, 190, {
             value: web3.utils.toWei("1", "ether")
         })
         let result = await instance.getPerson();
-        assert(result.senior === true, "Senior level not set");
+        assert(result.senior === true && result.age.toNumber() === 65, "Senior level not set");
     });
     it("should set age correctly", async function(){
         let instance = await People.deployed();
