@@ -8,4 +8,23 @@ contract("People", async function () {
             value: web3.utils.toWei("1", "ether")
         }), truffleAssert.ErrorType.REVERT);
     });
+    it("shouldn't create a person without a payment", async function () {
+        let instance = await People.deployed();
+        await truffleAssert.fails(instance.createPerson("Bob", 50, 190, {
+            value: 1000
+        }), truffleAssert.ErrorType.REVERT);
+    });
+    it("should set the senior status correctly", async function () {
+        let instance = await People.deployed();
+        await instance.createPerson("Bob", 65, 190, {
+            value: web3.utils.toWei("1", "ether")
+        })
+        let result = await instance.getPerson();
+        assert(result.senior === true, "Senior level not set");
+    });
+    it("should set age correctly", async function(){
+        let instance = await People.deployed();
+        let result = await instance.getPerson();
+        assert(result.age.toNumber() === 65, "Age not set correctly");
+    });
 });
