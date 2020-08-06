@@ -6,9 +6,9 @@ contract Ownable{
     modifier onlyOwner(){
         require(msg.sender == owner);
         _; //Continue execution
-    };
+    }
 
     constructor() public{
         owner = msg.sender;
-    };
-};
+    }
+}
