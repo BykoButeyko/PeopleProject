@@ -28,3 +28,24 @@ contract("People", async function () {
         assert(result.age.toNumber() === 65, "Age not set correctly");
     });
 });
+
+
+
+contract("People", async function(accounts){
+    it("Sholudn't be deleted by an another account owner", async ()=>{
+        let instance = await People.deployed();
+        await instance.createPerson("Bob", 65, 190, {value: web3.utils.toWei("1", "ether"), from: accounts[0]});
+        await truffleAssertions.fails(instance.deletePerson(accounts[0], {from: accounts[3]}),
+        truffleAssert.ErrorType.REVERT);
+    });
+    it("Should be able to delete your own account", async ()=>{
+        let instance = await People.deployed();
+        let person = await instance.getPerson();
+        assert(person.age.toNumber() !==4 && person.name !== '',
+        "A person has to have setted name and age before this test is executed");
+        await instance.deletePerson(accounts[0], {from: accounts[0]});
+        person = await instance.getPerson();
+        assert(person.age.toNumber() === 0 && person.name === '',
+        "Delete person was not executed correctly");
+    });
+});
