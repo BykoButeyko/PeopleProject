@@ -35,7 +35,7 @@ contract("People", async function(accounts){
     it("Sholudn't be deleted by an another account owner", async ()=>{
         let instance = await People.deployed();
         await instance.createPerson("Bob", 65, 190, {value: web3.utils.toWei("1", "ether"), from: accounts[0]});
-        await truffleAssertions.fails(instance.deletePerson(accounts[0], {from: accounts[3]}),
+        await truffleAssert.fails(instance.deletePerson(accounts[2], {from: accounts[2]}),
         truffleAssert.ErrorType.REVERT);
     });
     it("Should be able to delete your own account", async ()=>{
